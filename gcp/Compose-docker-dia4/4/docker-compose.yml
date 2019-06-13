@@ -111,7 +111,7 @@ services:
       placement:
         constraints: [node.role == manager]
 networks:
-    - backend
-    - frontend
+  - backend
+  - frontend
 volumes:
   db-data:
