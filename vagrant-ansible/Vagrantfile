@@ -1,3 +1,4 @@
+### https://medium.com/@Joachim8675309/vagrant-provisioning-with-ansible-6dba6bca6290
 ENV["HTTP_PROXY"] = "http://127.0.0.1:3128"
 ENV["HTTPS_PROXY"] = "http://127.0.0.1:3128"
 Vagrant.configure("2") do |config|
