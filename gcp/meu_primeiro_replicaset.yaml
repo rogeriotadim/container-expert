@@ -1,0 +1,55 @@
+apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  annotations:
+    deployment.kubernetes.io/desired-replicas: "3"
+    deployment.kubernetes.io/max-replicas: "4"
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2019-06-24T12:40:45Z"
+  generation: 3
+  labels:
+    app: nginx
+    pod-template-hash: 5c7588df
+  name: nginx-5c7588df
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Deployment
+    name: nginx
+    uid: 48ec9ae3-967d-11e9-aaf9-42010a9e0064
+  resourceVersion: "3718"
+  selfLink: /apis/extensions/v1beta1/namespaces/default/replicasets/nginx-5c7588df
+  uid: 48ededdb-967d-11e9-aaf9-42010a9e0064
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+      pod-template-hash: 5c7588df
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+        pod-template-hash: 5c7588df
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 3
+  fullyLabeledReplicas: 3
+  observedGeneration: 3
+  readyReplicas: 3
+  replicas: 3
