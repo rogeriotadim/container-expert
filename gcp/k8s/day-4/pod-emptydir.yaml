@@ -5,13 +5,13 @@ metadata:
   namespace: default
 spec:
   containers:
-  - name: busybox
-    image: busybox
+  - image: busybox
+    name: busybox
     command:
       - sleep
       - "3600"
     volumeMounts:
-    - mounthPath: /giropops
+    - mountPath: /giropops
       name: giropops-dir
     resources:
       limits:
@@ -22,4 +22,4 @@ spec:
         memory: 128Mi
   volumes:
   - name: giropops-dir
-  emptyDir: {}
+    emptyDir: {}
