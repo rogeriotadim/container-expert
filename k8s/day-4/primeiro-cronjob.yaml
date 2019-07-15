@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: giropops-cron
+  namespace: default
+spec:
+  schedule: "0/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: giropops-cron
+            image: busybox
+            args:
+            - /bin/sh
+            - c
+            - date; echo "Bem vindo ao cronjob do Kubernetes"; sleep 5
+          restartPolicy: OnFailure
