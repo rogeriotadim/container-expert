@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: app1
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+      - image: dockersamples/static-site
+        name: app1
+        env:
+        - name: AUTHOR
+          value: GIROPOPS
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: 128Mi
+            cpu: "200m"
+          requests:
+            memory: 64Mi
+            cpu: "100m"
