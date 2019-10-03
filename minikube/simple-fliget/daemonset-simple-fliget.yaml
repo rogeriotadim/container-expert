@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  labels:
+    ds-simple-figlet: fluentd-logging
+  name: ds-simple-figlet
+spec:
+  selector:
+    matchLabels:
+      name: ds-simple-figlet
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: ds-simple-figlet
+    spec:
+      containers:
+      - image: registry.gitlab.com/rogeriotadim/simple-figlet
+        name: ds-simple-figlet
