@@ -19,9 +19,18 @@ spec:
     spec:
       containers:
       - image: rogeriotadim/simple-node-api:1.0.0
+        env:
+        - name: "PORT"
+          value: "8080"
+
         name: simple-api
         ports:
         - containerPort: 8080
           name: "porta-api"
-        resources: {}
-status: {}
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "32M"
+          limits:
+            cpu: "20m"
+            memory: "64M"
