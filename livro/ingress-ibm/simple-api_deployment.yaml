@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: simple-api
+  name: simple-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: simple-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: simple-api
+    spec:
+      containers:
+      - image: rogeriotadim/simple-node-api:1.0.0
+        name: simple-api
+        ports:
+        - containerPort: 8080
+          name: "porta-api"
+        resources: {}
+status: {}
