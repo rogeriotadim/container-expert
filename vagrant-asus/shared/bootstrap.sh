@@ -1,6 +1,4 @@
 #!/bin/bash
-CURRENT_NODE_PRIVATE_IP=$1
-CURRENT_NODE_ROLE=$2
 cp /opt/vagrant/data/etc/modules-load.d/* /etc/modules-load.d/
 
 # Disable swap
@@ -53,12 +51,6 @@ echo 'source <(kubectl completion bash)' >>~/.bashrc
 kubectl completion bash >/etc/bash_completion.d/kubectl
 echo 'source /usr/share/bash-completion/bash_completion' >>~/.bashrc
 
-# Fix the ip route in case we are using multiple network interfaces
-# This command covers the default network for VIPs (10.96.0.0/12) as
-# per the kubernetes documentation: https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/
-# More on https://github.com/weaveworks/weave/issues/3599
-ip route add 10.96.0.0/12 dev enp0s8 src $CURRENT_NODE_PRIVATE_IP
-
 # Kubelet extra args:
 # - https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
 # - https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/kubelet-integration/
@@ -69,26 +61,5 @@ systemctl daemon-reload \
   && systemctl restart kubelet
 
 # start the k8s cluster on master node
-if [[ $CURRENT_NODE_ROLE == 'master' ]]; then
-  kubeadm config images pull \
-      && kubeadm init --apiserver-advertise-address $CURRENT_NODE_PRIVATE_IP --apiserver-cert-extra-sans $CURRENT_NODE_PRIVATE_IP --node-name $(hostname -s)
-
-  # copy the config files so you can properly manage your cluster
-  rm -rf $HOME/.kube
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-  # install the pod network
-  kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
-  
-  # copy join command and config so it is shared along the instances
-  rm -rf /opt/vagrant/data/.k8s && mkdir -p /opt/vagrant/data/.k8s
-  kubeadm token create --print-join-command >> /opt/vagrant/data/.k8s/kubeadm_join.sh
-  chmod +x /opt/vagrant/data/.k8s/kubeadm_join.sh
-
-  cp -i /etc/kubernetes/admin.conf /opt/vagrant/data/.k8s/admin.conf
-else
-  # Join the cluster
-  /opt/vagrant/data/.k8s/kubeadm_join.sh
-fi
+kubeadm join 192.168.1.200:6443 --token fthuym.ov5ovssq8d29xlhb \
+    --discovery-token-ca-cert-hash sha256:4a47e20669110275e49122b01040b50f52d417065415f8bc4d81aa5ca2fc0498
