@@ -1,0 +1,24 @@
+Vagrant.configure("2") do |config|
+    config.vm.box = "ubuntu/bionic64"
+    config.vm.synced_folder "./shared", "/opt/vagrant/data"
+
+    (1..2).each do |i|
+        node_role = "worker"
+        node_name = "gerebas-node-#{i}"
+
+        config.vm.define node_name do |node|
+            node.vm.hostname = node_name
+            node.vm.network "public_network", bridge: "bridge0"
+
+            node.vm.provider "virtualbox" do |vbox|
+                vbox.name = node_name
+                vbox.memory = 1024 * 1.5
+                vbox.cpus = 1
+            end
+
+            node.vm.provision "shell" do |shell|
+                shell.path = "./shared/bootstrap.sh"
+            end
+        end
+    end
+end
