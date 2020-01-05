@@ -1,5 +1,4 @@
 provider "google" {
-  credentials = "${file("./credentials/credentials.json")}"
-  project     = "container-expert"
+  credentials = file("./credentials/credentials.json")
   region      = var.region
 }
